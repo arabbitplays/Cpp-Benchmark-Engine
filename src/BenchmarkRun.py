@@ -7,9 +7,10 @@ class Column:
     def addValue(self, value: float):
         self.values.append(value)
 
-class BenchmarkResult:
-    def __init__(self, name: str):
+class BenchmarkRun:
+    def __init__(self, name: str, input_size: int):
         self.name = name
+        self.input_size = input_size;
         self.columns = {}
 
     def addColumnValue(self, col_name: str, value: float, unit: str = ""):

@@ -3,7 +3,12 @@ import os
 import re
 from pathlib import Path
 
-from src.BenchmarkResult import BenchmarkResult
+from src.Benchmark import Benchmark
+from src.BenchmarkRun import BenchmarkRun
+
+
+def list_files(directory: str) -> list[str]:
+    return [f for f in os.listdir(directory) if os.path.isfile(os.path.join(directory, f))]
 
 
 class BenchmarkEngine:
@@ -19,15 +24,14 @@ class BenchmarkEngine:
         self.output_dir = Path(output_dir)
         self.output_dir.mkdir(parents=True, exist_ok=True)
 
+    def run_benchmarks(self, runs: int = 5):
         if not self.binary_path.exists():
             raise FileNotFoundError(f"Binary not found: {self.binary_path}")
 
-    def run_benchmarks(self, runs: int = 5):
         for i in range(1, runs + 1):
             output_file = self.output_dir / f"run_{i}.txt"
             print(f"[Run {i}/{runs}] Executing {self.binary_path} -> {output_file}")
 
-            # Open file for writing and execute binary
             with open(output_file, "w") as out:
                 result = subprocess.run(
                     [str(self.binary_path)],
@@ -73,12 +77,8 @@ class BenchmarkEngine:
             return -1
         return start_index
 
-    def list_files(self, directory: str) -> list[str]:
-        """Return a list of file names in the given directory."""
-        return [f for f in os.listdir(directory) if os.path.isfile(os.path.join(directory, f))]
-
     def parse_output_files(self):
-        result_file_names = self.list_files(self.output_dir)
+        result_file_names = list_files(self.output_dir)
         benchmarks = {}
 
         for file_name in result_file_names:
@@ -97,15 +97,24 @@ class BenchmarkEngine:
                     continue
 
                 parts = token_pattern.findall(line.strip())
-                bm_name = parts[0]
+                run_name = parts[0]
+                if '/' in run_name:
+                    bm_name, input_size = run_name.split('/', 1)
+                else:
+                    bm_name = run_name
+                    input_size = -1
+
                 if not benchmarks.__contains__(bm_name):
-                    benchmarks[bm_name] = BenchmarkResult(bm_name)
-                benchmarks[bm_name].addColumnValue("Time", parts[1].replace("ns", "").strip(), "ns")
-                benchmarks[bm_name].addColumnValue("CPU", parts[2].replace("ns", "").strip(), "ns")
-                benchmarks[bm_name].addColumnValue("Iterations", parts[3])
+                    benchmarks[bm_name] = Benchmark(bm_name)
+                benchmark = benchmarks[bm_name]
+
+                run = benchmark.getRun(input_size)
+
+                run.addColumnValue("Time", parts[1].replace("ns", "").strip(), "ns")
+                run.addColumnValue("CPU", parts[2].replace("ns", "").strip(), "ns")
+                run.addColumnValue("Iterations", parts[3])
 
                 for user_counter in parts[4:]:
                     name, value, unit = self.splitUserCounter(user_counter)
-                    benchmarks[bm_name].addColumnValue(name, value, unit)
+                    run.addColumnValue(name, value, unit)
         return benchmarks
-
