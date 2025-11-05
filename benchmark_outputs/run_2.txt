@@ -1,0 +1,100 @@
+2025-11-05T15:27:17+01:00
+Running /home/oschdi/Projects/cpp-lab/delfin/exercise1/basics/build/release/system_benchmarks
+Run on (12 X 4388 MHz CPU s)
+CPU Caches:
+  L1 Data 32 KiB (x6)
+  L1 Instruction 32 KiB (x6)
+  L2 Unified 512 KiB (x6)
+  L3 Unified 16384 KiB (x1)
+Load Average: 1.35, 1.58, 1.67
+***WARNING*** CPU scaling is enabled, the benchmark real time measurements may be noisy and will incur extra overhead.
+-------------------------------------------------------------------------------------
+Benchmark                           Time             CPU   Iterations UserCounters...
+-------------------------------------------------------------------------------------
+read_linear/4                   0.700 ns        0.698 ns   1006420025 bytes_per_second=21.3427Gi/s read_bytes=16
+read_linear/8                   0.935 ns        0.932 ns    743633048 bytes_per_second=31.9616Gi/s read_bytes=32
+read_linear/64                   4.18 ns         4.17 ns    167804476 bytes_per_second=57.1995Gi/s read_bytes=256
+read_linear/512                  34.9 ns         34.8 ns     20072741 bytes_per_second=54.7396Gi/s read_bytes=2Ki
+read_linear/4096                  242 ns          242 ns      2895319 bytes_per_second=63.1506Gi/s read_bytes=16Ki
+read_linear/32768                1911 ns         1905 ns       367175 bytes_per_second=64.0725Gi/s read_bytes=128Ki
+read_linear/262144              16021 ns        15962 ns        43673 bytes_per_second=61.1789Gi/s read_bytes=1Mi
+read_linear/2097152            142748 ns       142019 ns         4941 bytes_per_second=55.0104Gi/s read_bytes=8Mi
+read_linear/16777216          2918847 ns      2907350 ns          220 bytes_per_second=21.4972Gi/s read_bytes=64Mi
+read_linear/33554432          5947276 ns      5925931 ns          104 bytes_per_second=21.0937Gi/s read_bytes=128Mi
+read_linear_list/4               1.20 ns         1.20 ns    580854676 bytes_per_second=12.442Gi/s read_bytes=16
+read_linear_list/8               2.75 ns         2.74 ns    251673024 bytes_per_second=10.871Gi/s read_bytes=32
+read_linear_list/64              52.8 ns         52.6 ns     13327618 bytes_per_second=4.53177Gi/s read_bytes=256
+read_linear_list/512              576 ns          574 ns      1219309 bytes_per_second=3.32257Gi/s read_bytes=2Ki
+read_linear_list/4096            4794 ns         4778 ns       127942 bytes_per_second=3.19357Gi/s read_bytes=16Ki
+read_linear_list/32768          39545 ns        39388 ns        17414 bytes_per_second=3.0992Gi/s read_bytes=128Ki
+read_linear_list/262144        338892 ns       337050 ns         2146 bytes_per_second=2.89739Gi/s read_bytes=1Mi
+read_linear_list/2097152      4029679 ns      4013857 ns          140 bytes_per_second=1.94638Gi/s read_bytes=8Mi
+read_linear_list/16777216    40483693 ns     40329210 ns           19 bytes_per_second=1.54975Gi/s read_bytes=64Mi
+read_linear_list/33554432    69237829 ns     68969048 ns           11 bytes_per_second=1.81241Gi/s read_bytes=128Mi
+read_linear_deque/4              1.39 ns         1.39 ns    503865744 bytes_per_second=10.7253Gi/s read_bytes=16
+read_linear_deque/8              2.31 ns         2.31 ns    302401688 bytes_per_second=12.9085Gi/s read_bytes=32
+read_linear_deque/64             15.7 ns         15.7 ns     44670865 bytes_per_second=15.1988Gi/s read_bytes=256
+read_linear_deque/512             152 ns          152 ns      4558707 bytes_per_second=12.5807Gi/s read_bytes=2Ki
+read_linear_deque/4096           1129 ns         1126 ns       616599 bytes_per_second=13.5504Gi/s read_bytes=16Ki
+read_linear_deque/32768          8966 ns         8941 ns        78035 bytes_per_second=13.6528Gi/s read_bytes=128Ki
+read_linear_deque/262144        74052 ns        73785 ns         9520 bytes_per_second=13.2352Gi/s read_bytes=1Mi
+read_linear_deque/2097152      609153 ns       606133 ns         1153 bytes_per_second=12.8891Gi/s read_bytes=8Mi
+read_linear_deque/16777216    5898255 ns      5876012 ns          103 bytes_per_second=10.6365Gi/s read_bytes=64Mi
+read_linear_deque/33554432   11259513 ns     11216164 ns           62 bytes_per_second=11.1446Gi/s read_bytes=128Mi
+read_random/4                    1.35 ns         1.35 ns    540891815 bytes_per_second=11.0476Gi/s read_bytes=16
+read_random/8                    2.34 ns         2.34 ns    302798501 bytes_per_second=12.7585Gi/s read_bytes=32
+read_random/64                   17.6 ns         17.6 ns     39874498 bytes_per_second=13.5808Gi/s read_bytes=256
+read_random/512                   128 ns          128 ns      5475003 bytes_per_second=14.9196Gi/s read_bytes=2Ki
+read_random/4096                 1158 ns         1154 ns       611049 bytes_per_second=13.2189Gi/s read_bytes=16Ki
+read_random/32768               14614 ns        14570 ns        47977 bytes_per_second=8.37844Gi/s read_bytes=128Ki
+read_random/262144             170474 ns       169823 ns         4530 bytes_per_second=5.75046Gi/s read_bytes=1Mi
+read_random/2097152           5128556 ns      5104519 ns          135 bytes_per_second=1.53051Gi/s read_bytes=8Mi
+read_random/16777216        100320868 ns     99945322 ns            7 bytes_per_second=640.35Mi/s read_bytes=64Mi
+read_random/33554432        220688883 ns    219861884 ns            3 bytes_per_second=582.184Mi/s read_bytes=128Mi
+prediction_baseline            199970 ns       199223 ns         3463 items_per_second=5.26334G/s
+branch_predictable             397037 ns       395503 ns         1771 items_per_second=2.65125G/s
+branch_unpredictable          3143235 ns      3130897 ns          223 items_per_second=334.912M/s
+cmov_predictable               399431 ns       397868 ns         1764 items_per_second=2.63548G/s
+cmov_unpredictable             397387 ns       395820 ns         1789 items_per_second=2.64912G/s
+throughput/add/int/1             58.7 ns         58.6 ns     11946214 items_per_second=5.46455G/s
+throughput/add/int/2             32.0 ns         31.9 ns     21934432 items_per_second=10.0266G/s
+throughput/add/int/3             22.4 ns         22.4 ns     31316934 items_per_second=14.3083G/s
+throughput/add/int/4             20.9 ns         20.8 ns     33703870 items_per_second=15.3796G/s
+throughput/add/int/6             16.5 ns         16.4 ns     42633845 items_per_second=19.4712G/s
+throughput/add/int/8             25.6 ns         25.5 ns     27423250 items_per_second=12.5254G/s
+throughput/add/int/16            44.0 ns         43.9 ns     15955941 items_per_second=7.2881G/s
+throughput/mul/int/1              208 ns          208 ns      3371636 items_per_second=1.54127G/s
+throughput/mul/int/2              108 ns          108 ns      6477024 items_per_second=2.96099G/s
+throughput/mul/int/3             69.3 ns         69.1 ns     10125500 items_per_second=4.62912G/s
+throughput/mul/int/4             74.6 ns         74.4 ns      9404757 items_per_second=4.29935G/s
+throughput/mul/int/6             55.5 ns         55.3 ns     12656609 items_per_second=5.78604G/s
+throughput/mul/int/8             74.6 ns         74.4 ns      9404914 items_per_second=4.29928G/s
+throughput/mul/int/16            76.3 ns         76.1 ns      9190039 items_per_second=4.20513G/s
+throughput/mod/int/1              636 ns          634 ns      1104149 items_per_second=504.783M/s
+throughput/mod/int/2              444 ns          442 ns      1582183 items_per_second=723.283M/s
+throughput/mod/int/3              416 ns          415 ns      1687603 items_per_second=771.509M/s
+throughput/mod/int/4              444 ns          442 ns      1582213 items_per_second=723.286M/s
+throughput/mod/int/6              333 ns          332 ns      2109642 items_per_second=964.367M/s
+throughput/mod/int/8              444 ns          442 ns      1582200 items_per_second=723.27M/s
+throughput/mod/int/16             444 ns          442 ns      1582187 items_per_second=723.298M/s
+throughput/add/double/1           691 ns          689 ns      1015385 items_per_second=464.174M/s
+throughput/add/double/2           349 ns          348 ns      2010954 items_per_second=919.29M/s
+throughput/add/double/3           220 ns          220 ns      3187520 items_per_second=1.45652G/s
+throughput/add/double/4           180 ns          179 ns      3909599 items_per_second=1.7873G/s
+throughput/add/double/6          97.6 ns         97.4 ns      7190420 items_per_second=3.28695G/s
+throughput/add/double/8           109 ns          109 ns      6420823 items_per_second=2.9352G/s
+throughput/add/double/16          120 ns          120 ns      5852306 items_per_second=2.67677G/s
+throughput/mul/double/1           691 ns          689 ns      1015382 items_per_second=464.157M/s
+throughput/mul/double/2           349 ns          348 ns      2011375 items_per_second=919.465M/s
+throughput/mul/double/3           218 ns          218 ns      3218045 items_per_second=1.47115G/s
+throughput/mul/double/4           177 ns          177 ns      3965602 items_per_second=1.81285G/s
+throughput/mul/double/6          89.6 ns         89.4 ns      7829579 items_per_second=3.57932G/s
+throughput/mul/double/8          94.7 ns         94.5 ns      7404565 items_per_second=3.38662G/s
+throughput/mul/double/16         79.2 ns         79.0 ns      8864509 items_per_second=4.05216G/s
+throughput/mod/double/1          1415 ns         1411 ns       495976 items_per_second=226.734M/s
+throughput/mod/double/2           714 ns          712 ns       983354 items_per_second=449.59M/s
+throughput/mod/double/3           457 ns          456 ns      1536445 items_per_second=702.393M/s
+throughput/mod/double/4           378 ns          377 ns      1858610 items_per_second=849.655M/s
+throughput/mod/double/6           250 ns          249 ns      2810321 items_per_second=1.2847G/s
+throughput/mod/double/8           333 ns          332 ns      2107898 items_per_second=963.612M/s
+throughput/mod/double/16          333 ns          332 ns      2107598 items_per_second=962.591M/s
