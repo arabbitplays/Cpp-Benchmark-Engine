@@ -110,11 +110,11 @@ class BenchmarkEngine:
 
                 run = benchmark.getRun(input_size)
 
-                run.addColumnValue("Time", parts[1].replace("ns", "").strip(), "ns")
-                run.addColumnValue("CPU", parts[2].replace("ns", "").strip(), "ns")
-                run.addColumnValue("Iterations", parts[3])
+                run.addColumnValue("Time", float(parts[1].replace("ns", "").strip()), "ns")
+                run.addColumnValue("CPU", float(parts[2].replace("ns", "").strip()), "ns")
+                run.addColumnValue("Iterations", int(parts[3]))
 
                 for user_counter in parts[4:]:
                     name, value, unit = self.splitUserCounter(user_counter)
-                    run.addColumnValue(name, value, unit)
+                    run.addColumnValue(name, float(value), unit)
         return benchmarks
