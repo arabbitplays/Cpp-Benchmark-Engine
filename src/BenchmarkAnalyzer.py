@@ -1,13 +1,13 @@
 import statistics
 
-def median(values):
+def calculateMedian(values):
     return statistics.median(values)
 
-def medianAbsolutDeviation(values, median):
+def calculateMedianAbsolutDeviation(values, median):
     deviations = [abs(x - median) for x in values]
     return statistics.median(deviations)
 
 def getAnalytics(values):
-    med = median(values)
-    mad = medianAbsolutDeviation(values, med)
+    med = calculateMedian(values)
+    mad = calculateMedianAbsolutDeviation(values, med)
     return med, mad

@@ -18,3 +18,6 @@ class BenchmarkRun:
             self.columns[col_name] = Column(col_name, unit)
 
         self.columns[col_name].addValue(value)
+
+    def getColumnNames(self):
+        return self.columns.keys()

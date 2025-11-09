@@ -1,3 +1,4 @@
+from pathlib import Path
 from statistics import median
 
 import matplotlib.pyplot as plt
@@ -6,27 +7,40 @@ from src.BenchmarkAnalyzer import getAnalytics
 from src.Benchmark import Benchmark
 from src.BenchmarkRun import BenchmarkRun
 
+def createPlotLibrary(benchmarks, output_dir):
+    out_dir_path = Path(output_dir)
+
+    for bm_name, benchmark in benchmarks.items():
+        bm_dir_path = out_dir_path / bm_name
+        bm_dir_path.mkdir(parents=True, exist_ok=True)
+        run = next(iter(benchmark.runs.values()))
+        col_names = run.getColumnNames()
+
+        for col_name in col_names:
+            plot = plotColumnForBenchmark(benchmark, col_name)
+            plot.savefig(str(bm_dir_path) + "/" + bm_name + "-" + col_name + ".png")
+            plot.close()
+
 
 def plotColumnForRun(run: BenchmarkRun, col_name: str):
     data = run.columns[col_name].values
     median, mad = getAnalytics(data)
-    plot1(median, mad)
+    return plot1(data, median, mad)
 
 def plotColumnForBenchmark(benchmark: Benchmark, col_name: str):
-    medians = []
-    mads = []
+    unit = ""
     labels = []
+    datas = []
 
     for label, run in benchmark.runs.items():
-        labels.append(label)
+        labels.append(run.input_size)
         data = run.columns[col_name].values
-        median, mad = getAnalytics(data)
-        medians.append(median)
-        mads.append(mad)
+        unit = run.columns[col_name].unit
+        datas.append(data)
 
-    plot2(medians, mads, labels)
+    return plot2(datas, labels, unit, benchmark.name + " - " + col_name)
 
-def plot1(median, mad):
+def plot1(data, median, mad):
 
     # Plot data points
     plt.figure(figsize=(8, 4))
@@ -48,28 +62,15 @@ def plot1(median, mad):
     plt.legend()
     plt.grid(True, linestyle="--", alpha=0.5)
     plt.tight_layout()
-    plt.show()
+    return plt
 
 
-def plot2(medians, mads, labels=None, width=0.6):
-    n = len(medians)
-    x = range(n)
+def plot2(datas, labels=None, unit:str = "", title:str = ""):
+    fig, ax = plt.subplots(figsize=(6, 4))
+    bp = ax.boxplot(datas, labels=labels, patch_artist=True)
 
-    plt.figure(figsize=(1.5 * n, 4))
+    ax.set_title(title)
+    ax.set_ylabel(unit)
 
-    for i, (median_val, mad_val) in enumerate(zip(medians, mads)):
-        # Draw the "box" for MAD
-        plt.bar(i, 2 * mad_val, bottom=median_val - mad_val,
-                width=width, color='orange', alpha=0.3, edgecolor='black')
-        # Draw median line
-        plt.plot([i - width / 2, i + width / 2],
-                 [median_val, median_val],
-                 color='red', linestyle='--', linewidth=2)
-
-    # Labels
-    plt.xticks(x, labels if labels else [f"Item {i + 1}" for i in x])
-    plt.ylabel("Value")
-    plt.title("Median ± MAD Box Plots")
-    plt.grid(True, linestyle='--', alpha=0.5)
     plt.tight_layout()
-    plt.show()
+    return plt
