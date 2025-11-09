@@ -10,6 +10,7 @@ from src.BenchmarkRun import BenchmarkRun
 def createPlotLibrary(benchmarks, output_dir):
     out_dir_path = Path(output_dir)
 
+    done_bm_count = 0
     for bm_name, benchmark in benchmarks.items():
         bm_dir_path = out_dir_path / bm_name
         bm_dir_path.mkdir(parents=True, exist_ok=True)
@@ -18,8 +19,11 @@ def createPlotLibrary(benchmarks, output_dir):
 
         for col_name in col_names:
             plot = plotColumnForBenchmark(benchmark, col_name)
-            plot.savefig(str(bm_dir_path) + "/" + bm_name + "-" + col_name + ".png")
+            plot.savefig(str(bm_dir_path) + "/" + bm_name + "-" + col_name + ".png", dpi=300)
             plot.close()
+
+        done_bm_count += 1
+        print("[" + str(done_bm_count) + "/" + str(len(benchmarks)) + "] Generated " + str(len(col_names)) + " plots for benchmark " + bm_name)
 
 
 def plotColumnForRun(run: BenchmarkRun, col_name: str):
