@@ -5,9 +5,10 @@ import matplotlib.pyplot as plt
 
 from src.BenchmarkAnalyzer import getAnalytics
 from src.Benchmark import Benchmark
+from src.BenchmarkGroup import BenchmarkGroup
 from src.BenchmarkRun import BenchmarkRun
 
-def createPlotLibrary(benchmarks, output_dir):
+def create_plot_library(benchmarks, output_dir):
     out_dir_path = Path(output_dir)
 
     done_bm_count = 0
@@ -18,7 +19,7 @@ def createPlotLibrary(benchmarks, output_dir):
         col_names = run.getColumnNames()
 
         for col_name in col_names:
-            plot = plotColumnForBenchmark(benchmark, col_name)
+            plot = plot_column_for_benchmark(benchmark, col_name)
             plot.savefig(str(bm_dir_path) + "/" + bm_name + "-" + col_name + ".png", dpi=300)
             plot.close()
 
@@ -26,12 +27,12 @@ def createPlotLibrary(benchmarks, output_dir):
         print("[" + str(done_bm_count) + "/" + str(len(benchmarks)) + "] Generated " + str(len(col_names)) + " plots for benchmark " + bm_name)
 
 
-def plotColumnForRun(run: BenchmarkRun, col_name: str):
+def plot_column_for_run(run: BenchmarkRun, col_name: str):
     data = run.columns[col_name].values
     median, mad = getAnalytics(data)
     return plot1(data, median, mad)
 
-def plotColumnForBenchmark(benchmark: Benchmark, col_name: str):
+def plot_column_for_benchmark(benchmark: Benchmark, col_name: str):
     unit = ""
     labels = []
     datas = []
@@ -77,4 +78,72 @@ def plot2(datas, labels=None, unit:str = "", title:str = ""):
     ax.set_ylabel(unit)
 
     plt.tight_layout()
+    return plt
+
+
+# ----------------------- Groups ------------------------------------------
+
+def plot_benchmark_group(group : BenchmarkGroup, output_dir):
+    run = next(iter(group.benchmarks[0].runs.values()))
+    col_names = run.getColumnNames()
+
+    out_dir_path = Path(output_dir)
+    group_dir_path = out_dir_path / group.name
+    group_dir_path.mkdir(parents=True, exist_ok=True)
+
+    for col_name in col_names:
+        plot = plot_column_for_benchmark_group(group, col_name)
+        plot.savefig(str(group_dir_path) + "/" + group.name + "-" + col_name + ".png", dpi=300)
+        plot.close()
+
+def plot_column_for_benchmark_group(group: BenchmarkGroup, col_name: str):
+    unit = ""
+    labels = []
+    layers = []
+    datas = []
+
+    # get labels of the bars
+    for label, run in group.benchmarks[0].runs.items():
+        labels.append(run.input_size)
+        unit = run.columns[col_name].unit
+    for i in range(0, len(labels)):
+        datas.append([])
+
+    for benchmark in group.benchmarks:
+        label_idx = 0
+        for label, run in benchmark.runs.items():
+            data = run.columns[col_name].values
+            median, mad = getAnalytics(data)
+            datas[label_idx].append(median)
+            label_idx += 1
+        layers.append(benchmark.name)
+
+    return group_bar_plot(datas, labels, layers, unit, group.name + " - " + col_name)
+
+def group_bar_plot(data, labels, layers, unit:str = "", title:str = ""):
+    n_bars = len(labels)
+    n_layers = len(data[0])
+
+    cmap = plt.get_cmap("tab10")  # you can use "tab20", "viridis", etc.
+    colors = [cmap(i / n_layers) for i in range(n_layers)]
+
+    for bar_idx in range(n_bars):
+        # Get values and layer indices for this bar
+        values = [(data[bar_idx][i], i) for i in range(n_layers)]
+        # Sort by value descending (largest at bottom)
+        values.sort(reverse=True, key=lambda x: x[0])
+
+        bottom = 0
+        for val, layer_idx in values:
+            plt.bar(bar_idx, val, color=colors[layer_idx])
+
+    plt.xticks(range(n_bars), labels)
+    plt.ylabel(unit)
+    plt.title(title)
+
+    # Add a legend manually to preserve color-to-layer mapping
+    for i in range(n_layers):
+        plt.bar(0, 0, color=colors[i], label=layers[i])  # invisible bars for legend
+    plt.legend()
+    plt.legend()
     return plt

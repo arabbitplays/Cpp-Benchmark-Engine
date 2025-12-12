@@ -1,10 +1,11 @@
+import fnmatch
 import subprocess
 import os
 import re
 from pathlib import Path
 
+from BenchmarkGroup import BenchmarkGroup
 from src.Benchmark import Benchmark
-from src.BenchmarkRun import BenchmarkRun
 
 
 def list_files(directory: str) -> list[str]:
@@ -99,7 +100,8 @@ class BenchmarkEngine:
                 parts = token_pattern.findall(line.strip())
                 run_name = parts[0]
                 if '/' in run_name:
-                    bm_name, input_size = run_name.split('/', 1)
+                    bm_name, input_size = run_name.rsplit('/', 1)
+                    bm_name = bm_name.replace("/", "-")
                 else:
                     bm_name = run_name
                     input_size = -1
@@ -118,3 +120,10 @@ class BenchmarkEngine:
                     name, value, unit = self.splitUserCounter(user_counter)
                     run.addColumnValue(name, float(value), unit)
         return benchmarks
+
+    def create_group(self, benchmark_dict : dict[str, Benchmark], pattern):
+        matching_benchmarks = [v for k, v in benchmark_dict.items() if fnmatch.fnmatch(k, pattern)]
+        group = BenchmarkGroup(pattern)
+        for bm in matching_benchmarks:
+            group.addBenchmark(bm)
+        return group
